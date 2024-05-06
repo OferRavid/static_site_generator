@@ -1,6 +1,6 @@
 import unittest
 
-from textnode import TextNode
+from textnode import TextNode, text_node_to_html_node
 
 
 class TestTextNode(unittest.TestCase):
@@ -27,6 +27,10 @@ class TestTextNode(unittest.TestCase):
         node_without_url = TextNode("Link text", "link")
         self.assertTrue(node_without_url.url is None)
         self.assertNotEqual(node_with_url, node_without_url)
+    
+    def test_invalid_type(self):
+        node = TextNode("Invalid type", "x")
+        self.assertRaises(ValueError, text_node_to_html_node, node)
 
 
 if __name__ == "__main__":
