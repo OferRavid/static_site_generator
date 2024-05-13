@@ -4,6 +4,11 @@ from markdown_blocks import (
     markdown_to_blocks,
     block_to_block_type,
     markdown_to_html_node,
+    heading_block_to_html_node,
+    quote_block_to_html_node,
+    code_block_to_html_node,
+    list_block_to_list_items,
+    paragraph_block_to_html_node,
     block_type_h,
     block_type_p,
     block_type_q,
@@ -197,7 +202,42 @@ this is paragraph text
             html,
             "<div><blockquote>This is a blockquote block</blockquote><p>this is paragraph text</p></div>",
         )
-
+    
+    def test_invalid_list(self):
+        ulist = """
+- 
+- with items
+- and *more* items
+"""
+        self.assertRaises(ValueError, list_block_to_list_items, ulist)
+    
+    def test_invalid_quote(self):
+        quote = """
+> This is a
+- blockquote block
+"""
+        self.assertRaises(ValueError, quote_block_to_html_node, quote)
+    
+    def test_invalid_code(self):
+        code = """
+```
+First line of code
+Second line of code
+``
+"""
+        self.assertRaises(ValueError, code_block_to_html_node, code)
+    
+    def test_invalid_heading(self):
+        heading1 = "####### this is an invalid heading"
+        heading2 = "#"
+        heading3 = "# "
+        self.assertRaises(SyntaxError, heading_block_to_html_node, heading1)
+        self.assertRaises(SyntaxError, heading_block_to_html_node, heading2)
+        self.assertRaises(ValueError, heading_block_to_html_node, heading3)
+    
+    def test_invalid_paragraph(self):
+        paragraph = ""
+        self.assertRaises(ValueError, paragraph_block_to_html_node, paragraph)
 
 
 if __name__ == "__main__":

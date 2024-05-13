@@ -82,13 +82,16 @@ def quote_block_to_html_node(block):
     children = get_children(quote)
     return ParentNode("blockquote", children)
 
-def list_block_to_list_items(block):
+def list_block_to_list_items(block:str):
+    if block_to_block_type(block) != block_type_ol and block_to_block_type(block) != block_type_ul:
+        raise ValueError("Invalid list block")
     list_items = []
-    for line in block.split("\n"):
-        try:
-            children = get_children(line.split(" ", 1)[1])
-        except IndexError:
+    lines = block.split("\n")
+    for line in lines:
+        item_sections = line.split(" ", 1)
+        if len(item_sections) != 2 or item_sections[1] == "":
             raise ValueError("Invalid list block")
+        children = get_children(item_sections[1])
         list_items.append(ParentNode("li", children))
     return list_items
 
@@ -108,6 +111,8 @@ def heading_block_to_html_node(block):
 
 def paragraph_block_to_html_node(block):
     paragraph = " ".join(block.split("\n"))
+    if paragraph == "":
+        raise ValueError("Invalid paragraph block")
     nodes = text_to_textnodes(paragraph)
     return ParentNode("p", [text_node_to_html_node(node) for node in nodes])
 
