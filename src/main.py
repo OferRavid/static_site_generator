@@ -1,17 +1,29 @@
-from textnode import TextNode
-from inline_markdown import extract_markdown_images, extract_markdown_links
+from copy_static import copy_dir
+from generate_content import generate_pages_recursive
+
+import os, shutil
+
+dir_path_static = "static"
+dir_path_public = "public"
+dir_path_content = "content"
+template_path = "template.html"
+
 
 def main():
-    # text_node = TextNode("This is a text node", "bold", "https://www.boot.dev")
-    # print(text_node)
-    # text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)"
-    # print(extract_markdown_images(text))
-    # # [("image", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"), ("another", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png")]
-    # text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
-    # print(extract_markdown_links(text))
-    # # [("link", "https://www.example.com"), ("another", "https://www.example.com/another")]
-    print(list([1])[1])
-
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
+    if not os.path.exists(dir_path_static):
+        print("Missing static directory... Aborting.")
+        exit(1)
+    copy_dir(dir_path_static, dir_path_public)
+    try:
+        generate_pages_recursive(dir_path_content, template_path, dir_path_public)
+    except FileNotFoundError:
+        print("Missing file or directory")
+        exit(1)
+    except ValueError as e:
+        print(e)
+        exit(1)
 
 if __name__ == "__main__":
     main()

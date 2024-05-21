@@ -26,7 +26,7 @@ def markdown_to_blocks(markdown):
         final_blocks.append(block.strip())
     return final_blocks
 
-def block_to_block_type(block: str):
+def block_to_block_type(block):
     lines = block.split("\n")
     if block.split(" ")[0] in heading_starts:
         return block_type_h
