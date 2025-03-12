@@ -5,5 +5,5 @@ if [ $? -ne 0 ]; then
     echo "Something went wrong with generating the server's files."
     exit 1
 else
-    python server.py --dir public
+    cd public && python3 -m http.server 8888
 fi
