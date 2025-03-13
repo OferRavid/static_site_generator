@@ -105,7 +105,7 @@ def text_to_textnodes(text):
                                         "**",
                                         text_type_bold
                                     ),
-                                    "*",
+                                    "_",
                                     text_type_italic
                                 ),
                                 "`",
