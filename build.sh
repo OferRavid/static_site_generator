@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python src/main.py "/OferRavid/StaticSiteGenerator.git/"
+python src/main.py "/StaticSiteGenerator/"
